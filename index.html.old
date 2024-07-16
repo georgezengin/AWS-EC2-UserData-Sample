@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>George's site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 150px;
+      font-size: 36px;
+    }
+    img {
+      margin-top: 50px;
+      max-width: 500px;
+      max-height: 400px;
+    }
+    p {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello World, this is George from $(hostname -f)</h1>
+
+  <img id="landscape-image" src="" alt="Random Landscape Image">
+  <p id="joke"></p>
+  <script>
+    // Function to fetch a random joke from the JokeAPI
+    function fetchJoke() {
+      fetch("https://v2.jokeapi.dev/joke/Any")
+        .then(response => response.json())
+        .then(data => {
+          var jokeElement = document.getElementById("joke");
+          jokeElement.textContent = data.joke;
+        })
+        .catch(error => {
+          console.log("Error fetching joke:", error);
+        });
+    }
+    // Function to generate a random image URL from Lorem Picsum API
+    function generateRandomImageUrl() {
+      var randomWidth = Math.floor(Math.random() * (1200 - 800 + 1)) + 800;
+      var randomHeight = Math.floor(Math.random() * (800 - 400 + 1)) + 400;
+      var imageUrl = `https://picsum.photos/${randomWidth}/${randomHeight}`;
+      return imageUrl;
+    }
+    // Display a random landscape image
+    var landscapeImage = document.getElementById("landscape-image");
+    landscapeImage.src = generateRandomImageUrl();
+    // Call the fetchJoke() function to display a random joke
+    fetchJoke();
+  </script>
+<br><br><!--h1 Hello World from $(hostname -f)</h1>
+</body>
+</html>
