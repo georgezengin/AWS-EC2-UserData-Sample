@@ -1,3 +1,16 @@
+#!/bin/bash
+# Use this for your user data (script from top to bottom)
+# Install httpd (Linux 2 version)
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+
+# Get the hostname
+HOSTNAME=$(hostname -f)
+
+# Create the HTML file using cat and heredoc
+cat << EOF > /var/www/html/index.html
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,7 +156,7 @@
       var elements = [];
       var jokeElement = document.createElement("p");
       jokeElement.classList.add("joke-text");
-      jokeElement.setAttribute('title', `Category: ${data.category}`);
+      jokeElement.setAttribute('title', \`Category: \${data.category}\`);
       if (data.type === "single") {
           jokeElement.textContent = data.joke;
           elements.push(jokeElement);
@@ -176,7 +189,7 @@
 	  copyButton.appendChild(copyIcon);
 
 	  copyButton.onclick = function() {
-		var textToCopy = data.type === "single" ? data.joke : `${data.setup}\n${data.delivery}`;
+		var textToCopy = data.type === "single" ? data.joke : \`\${data.setup}\\n\${data.delivery}\`;
 		
 		// Use the Clipboard API
 		if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -222,8 +235,7 @@
 	  };
 
 	  return copyButton;
-	}
-	function playBeep() {
+	}    function playBeep() {
         var audioContext = new (window.AudioContext || window.webkitAudioContext)();
         var oscillator = audioContext.createOscillator();
         oscillator.type = 'sine';
@@ -237,7 +249,7 @@
         var viewportHeight = window.innerHeight * 0.8;
         var randomWidth = Math.floor(Math.random() * (viewportWidth - viewportWidth * 0.8 + 1)) + viewportWidth * 0.8;
         var randomHeight = Math.floor(Math.random() * (viewportHeight - viewportHeight * 0.8 + 1)) + viewportHeight * 0.8;
-        var imageUrl = `https://picsum.photos/${Math.floor(randomWidth)}/${Math.floor(randomHeight)}`;
+        var imageUrl = \`https://picsum.photos/\${Math.floor(randomWidth)}/\${Math.floor(randomHeight)}\`;
         return imageUrl;
     }
     function debounce(func, wait) {
@@ -264,3 +276,4 @@
   </script>
 </body>
 </html>
+EOF
