@@ -1,10 +1,24 @@
 #!/bin/bash
 # Use this for your user data (script from top to bottom)
 # Install httpd (Linux 2 version)
-yum update -y
-yum install -y httpd
-systemctl start httpd
+dns update -y
+dns install -y httpd
+
+# Start the httpd service
 systemctl enable httpd
+systemctl start httpd
+
+# Install Docker
+dns install docker -y
+systemctl enable docker
+systemctl start docker
+
+# Pull Jenkins in Docker
+docker pull jenkins/jenkins:lts
+
+# Run Jenkins container
+docker run -d -p 8080:8080 jenkins/jenkins:lts
+docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_volume:/var/jenkins_home --name my_jenkins jenkins/jenkins:lts
 
 # Get the hostname
 HOSTNAME=$(hostname)
